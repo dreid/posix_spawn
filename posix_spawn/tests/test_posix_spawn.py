@@ -18,7 +18,7 @@ class TestPosixSpawn(object):
                 import os
                 with open("{0!s}", "w") as pidfile:
                     pidfile.write(str(os.getpid()))
-            """).format(pidfile)
+            """).format(pidfile).encode('utf-8')
         ])
 
         pid_info = os.waitpid(pid, 0)
@@ -46,7 +46,7 @@ class TestPosixSpawn(object):
                 import os
                 with open("{0!s}", "w") as envfile:
                     envfile.write(os.environ['foo'])
-            """).format(envfile)],
+            """).format(envfile).encode('utf-8')],
             {b"foo": b"bar"}
         )
 
@@ -64,7 +64,7 @@ class TestPosixSpawn(object):
                 import os
                 with open("{0!s}", "w") as envfile:
                     envfile.write(os.environ['inherits'])
-            """).format(envfile)],
+            """).format(envfile).encode('utf-8')],
             env=None
         )
 
@@ -100,7 +100,7 @@ class TestFileActions(object):
             textwrap.dedent("""
                 import sys
                 sys.stdout.write("hello")
-            """)],
+            """).encode('utf-8')],
             file_actions=fa
         )
 
@@ -126,7 +126,7 @@ class TestFileActions(object):
                     if e.errno == errno.EBADF:
                         with open(sys.argv[1], 'w') as closefile:
                             closefile.write('is closed')
-            """),
+            """.encode('utf-8')),
             str(closefile)],
             file_actions=fa
         )
@@ -146,7 +146,7 @@ class TestFileActions(object):
                 textwrap.dedent("""
                     import sys
                     sys.stdout.write("hello")
-                """)],
+                """).encode('utf-8')],
                 file_actions=fa
             )
 
