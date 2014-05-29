@@ -126,7 +126,7 @@ class TestFileActions(object):
                     if e.errno == errno.EBADF:
                         with open(sys.argv[1], 'w') as closefile:
                             closefile.write('is closed')
-            """.encode('utf-8')),
+            """).encode('utf-8'),
             str(closefile)],
             file_actions=fa
         )
