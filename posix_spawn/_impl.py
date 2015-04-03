@@ -72,7 +72,8 @@ class FileActions(object):
         _check_error(res)
 
 
-def posix_spawn(path, args, env=None, file_actions=None, attributes=None):
+def posix_spawn(path, args, env=None, file_actions=None, attributes=None,
+                search_path=False):
     if not isinstance(path, bytes):
         raise TypeError(
             "path must be bytes not {0}.".format(type(path).__name__))
@@ -97,7 +98,9 @@ def posix_spawn(path, args, env=None, file_actions=None, attributes=None):
     env_list = [ffi.new("char[]", b"=".join([key, value]))
                 for key, value in env.items()] + [ffi.NULL]
 
-    res = lib.posix_spawn(
+    spawn = lib.posix_spawnp if search_path else lib.posix_spawn
+
+    res = spawn(
         pid,
         path,
         file_actions,
